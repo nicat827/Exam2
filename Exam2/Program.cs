@@ -1,5 +1,6 @@
 using Exam2.DAL;
 using Exam2.Models;
+using Exam2.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ builder.Services.ConfigureApplicationCookie(cfg =>
 });
 //adding seed data
 builder.Services.AddScoped<AppDbContextInitializer>();
+builder.Services.AddScoped<LayoutService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

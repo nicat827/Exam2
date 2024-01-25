@@ -48,7 +48,7 @@ namespace Exam2.Areas.Admin.Controllers
                 return View(vm);
             }
 
-            await _userManager.AddToRoleAsync(newUser, UserRole.Moderator.ToString());
+            await _userManager.AddToRoleAsync(newUser, UserRole.Admin.ToString());
             await _signInManager.SignInAsync(newUser, false);
             return RedirectToAction("Index", "Dashboard");
         }

@@ -23,6 +23,7 @@ namespace Exam2.Areas.Admin.Controllers
             _context = context;
             _env = env;
         }
+
         public async Task<IActionResult> Index(int page = 1)
         {
             if (page <1) return NotFound();
@@ -65,7 +66,7 @@ namespace Exam2.Areas.Admin.Controllers
             if (!await _context.Professions.AnyAsync(p => p.Id == vm.ProfessionId))
             {
                 vm.Professions = await _getProfessions();
-                ModelState.AddModelError("ProfessionId", "Profession with this name already exists!");
+                ModelState.AddModelError("ProfessionId", "Profession with this name doesnt exists!");
                 return View(vm);
             }
 
@@ -86,7 +87,94 @@ namespace Exam2.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> Update(int id)
+        {
+            if (id <= 0) return NotFound();
+            Employee? employee = await _context.Employees.Where(e => e.Id == id).FirstOrDefaultAsync();
+            if (employee is null) return BadRequest();
+            return View(new EmployeeUpdateVM {
+                Professions = await _getProfessions(),
+                Name = employee.Name,
+                Surname = employee.Surname,
+                Bio = employee.Bio,
+                ImageUrl = employee.ImageUrl,
+                FacebookLink = employee.FacebookLink,
+                TwitterLink = employee.TwitterLink,
+                LinekdinLink = employee.LindekinLink,
+                InstagramLink = employee.InstagramLink,
+                ProfessionId = employee.ProfessionId,
+            });
 
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Update(int id, EmployeeUpdateVM vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                vm.Professions = await _getProfessions();
+                return View(vm);
+            }
+
+            Employee? employee = await _context.Employees.Where(e => e.Id == id).FirstOrDefaultAsync();
+            if (employee is null) return BadRequest();
+            if (vm.ProfessionId != employee.ProfessionId)
+            {
+                if (!await _context.Professions.AnyAsync(p => p.Id == vm.ProfessionId))
+                {
+                    vm.Professions = await _getProfessions();
+                    ModelState.AddModelError("ProfessionId", "Profession with this name doesnt exists!");
+                    return View(vm);
+                }
+
+                employee.ProfessionId = vm.ProfessionId;
+            }
+            if (vm.Photo is not null)
+            {
+                if (!vm.Photo.CheckFileType(FileType.Image))
+                {
+                    ModelState.AddModelError("Photo", "Please, make sure, you uploaded a photo");
+                    vm.Professions = await _getProfessions();
+                    return View(vm);
+                }
+
+                if (!vm.Photo.CheckFileSize(2, SizeType.Mb))
+                {
+                    ModelState.AddModelError("Photo", $"{nameof(vm.Photo)} size cant be longer than 2MB!");
+                    vm.Professions = await _getProfessions();
+                    return View(vm);
+                }
+
+                employee.ImageUrl.DeleteFile(_env.WebRootPath, "uploads", "employees");
+                employee.ImageUrl = await vm.Photo.CreateFileAsync(_env.WebRootPath, "uploads", "employees");
+
+            }
+
+
+            employee.Name = vm.Name.Capitalize();
+            employee.Surname = vm.Surname.Capitalize();
+            employee.Bio = vm.Bio;
+            employee.FacebookLink = vm.FacebookLink;
+            employee.TwitterLink = vm.TwitterLink;
+            employee.InstagramLink = vm.InstagramLink;
+            employee.LindekinLink = vm.LinekdinLink;
+          
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0) return NotFound();
+            Employee? employee = await _context.Employees.Where(e => e.Id == id).FirstOrDefaultAsync();
+            if (employee is null) return BadRequest();
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // get professions curstom method
         private async Task<IEnumerable<Profession>> _getProfessions()
         {
             return await _context.Professions.ToListAsync();

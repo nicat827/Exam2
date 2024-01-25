@@ -1,14 +1,24 @@
-﻿using Exam2.Models;
+﻿using Exam2.DAL;
+using Exam2.Entities;
+using Exam2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Exam2.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<Employee> employees = await _context.Employees.Include(e => e.Profession).ToListAsync();
+            return View(employees);
         }
 
       

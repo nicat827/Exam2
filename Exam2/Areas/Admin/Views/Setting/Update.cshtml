@@ -1,0 +1,18 @@
+﻿@model SettingUpdateVM
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Update Setting</h4>
+            <form class="forms-sample" method="post">
+                <div class="form-group">
+                    <label asp-for="Value"></label>
+                    <input asp-for="Value" class="form-control" placeholder="Value">
+                    <span asp-validation-for="Value" class="text-danger mt-2"></span>
+                </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button class="btn btn-light" asp-controller="setting" asp-action="index">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div

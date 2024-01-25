@@ -1,0 +1,61 @@
+﻿@model EmployeeCreateVM
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create Employee</h4>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Photo"></label>
+                    <input asp-for="Photo" class="form-control">
+                    <span asp-validation-for="Photo" class="text-danger mt-2"></span>
+                </div>
+                   <div class="form-group">
+                    <label asp-for="ProfessionId"></label>
+                    <br />
+                    <select asp-for="ProfessionId" asp-items="new SelectList(Model.Professions,nameof(Profession.Id), nameof(Profession.Name))">
+                        <option selected disabled>Chooce profession</option>
+                    </select>
+                    <span asp-validation-for="ProfessionId" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Name">
+                    <span asp-validation-for="Name" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname"></label>
+                    <input asp-for="Surname" class="form-control" placeholder="Surname">
+                    <span asp-validation-for="Surname" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Bio"></label>
+                    <input asp-for="Bio" class="form-control" placeholder="Bio">
+                    <span asp-validation-for="Bio" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FacebookLink"></label>
+                    <input asp-for="FacebookLink" class="form-control" placeholder="Facebook Link">
+                    <span asp-validation-for="FacebookLink" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TwitterLink"></label>
+                    <input asp-for="TwitterLink" class="form-control" placeholder="Twitter Link">
+                    <span asp-validation-for="TwitterLink" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LinekdinLink"></label>
+                    <input asp-for="LinekdinLink" class="form-control" placeholder="Linkedin Link">
+                    <span asp-validation-for="LinekdinLink" class="text-danger mt-2"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="InstagramLink"></label>
+                    <input asp-for="InstagramLink" class="form-control" placeholder="Instagram Link">
+                    <span asp-validation-for="InstagramLink" class="text-danger mt-2"></span>
+                </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <button class="btn btn-light" asp-controller="employee" asp-action="index">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

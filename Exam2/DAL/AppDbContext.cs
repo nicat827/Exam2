@@ -12,6 +12,6 @@ namespace Exam2.DAL
 
         public DbSet<Profession> Professions { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Setting> Setting { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }

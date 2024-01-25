@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@inject LayoutService service;
+@{
+    Dictionary<string, string> settings = await service.GetSettingsAsync();
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -43,8 +49,8 @@
     <div id="topbar" class="fixed-top d-flex align-items-center ">
         <div class="container d-flex align-items-center justify-content-center justify-content-md-between">
             <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@example.com</a>
-                <i class="bi bi-phone-fill phone-icon"></i> +1 5589 55488 55
+                <i class="@settings["mail-icon"]"></i><a href="mailto:contact@example.com">@settings["mail"]</a>
+                <i class="@settings["phone-icon"]"></i> @settings["phone"]
             </div>
             <div class="cta d-none d-md-block">
                 <a href="#about" class="scrollto">Get Started</a>
@@ -62,6 +68,17 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a class="nav-link scrollto" asp-area="admin" asp-controller="dashboard" asp-action="index">Admin Panel</a></li>
+                        <li><a class="nav-link scrollto" asp-area="admin" asp-controller="account" asp-action="logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a class="nav-link scrollto" asp-area="admin" asp-controller="account" asp-action="login">Login</a></li>
+                        <li><a class="nav-link scrollto" asp-area="admin" asp-controller="account" asp-action="register">Register</a></li>
+                    }
+
                     <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
@@ -144,11 +161,9 @@
                     <div class="col-lg-3 col-md-6 footer-contact">
                         <h4>Contact Us</h4>
                         <p>
-                            A108 Adam Street <br>
-                            New York, NY 535022<br>
-                            United States <br><br>
-                            <strong>Phone:</strong> +1 5589 55488 55<br>
-                            <strong>Email:</strong> info@example.com<br>
+                            @settings["address"] <br><br>
+                            <strong>Phone:</strong> @settings["phone"]<br>
+                            <strong>Email:</strong> @settings["mail"]<br>
                         </p>
 
                     </div>

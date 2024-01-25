@@ -1,7 +1,7 @@
 ﻿using Exam2.Entities;
 using Exam2.Entities.Base;
 
-namespace Exam2.Models
+namespace Exam2.Entities
 {
     public class Employee:BaseNamebleEntity
     {
