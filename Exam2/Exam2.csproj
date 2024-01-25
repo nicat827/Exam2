@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utilities\Extencions\" />
+    <Folder Include="wwwroot\uploads\employees\" />
   </ItemGroup>
 
 </Project>

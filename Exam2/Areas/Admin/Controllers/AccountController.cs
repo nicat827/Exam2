@@ -37,7 +37,7 @@ namespace Exam2.Areas.Admin.Controllers
                 UserName = vm.UserName
             };
 
-            var res = await _userManager.CreateAsync(newUser);
+            var res = await _userManager.CreateAsync(newUser, vm.Password);
             if (!res.Succeeded)
             {
                 foreach (var err in res.Errors)
